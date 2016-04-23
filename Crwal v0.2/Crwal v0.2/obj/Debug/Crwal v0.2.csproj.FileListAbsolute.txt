@@ -1,0 +1,9 @@
+C:\Users\Ahmad Vaceem\Documents\Visual Studio 2015\Projects\Crwal v0.2\Crwal v0.2\bin\Debug\Crwal v0.2.exe.config
+C:\Users\Ahmad Vaceem\Documents\Visual Studio 2015\Projects\Crwal v0.2\Crwal v0.2\bin\Debug\Crwal v0.2.exe
+C:\Users\Ahmad Vaceem\Documents\Visual Studio 2015\Projects\Crwal v0.2\Crwal v0.2\bin\Debug\Crwal v0.2.pdb
+C:\Users\Ahmad Vaceem\Documents\Visual Studio 2015\Projects\Crwal v0.2\Crwal v0.2\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Ahmad Vaceem\Documents\Visual Studio 2015\Projects\Crwal v0.2\Crwal v0.2\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Ahmad Vaceem\Documents\Visual Studio 2015\Projects\Crwal v0.2\Crwal v0.2\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Ahmad Vaceem\Documents\Visual Studio 2015\Projects\Crwal v0.2\Crwal v0.2\obj\Debug\Crwal v0.2.exe
+C:\Users\Ahmad Vaceem\Documents\Visual Studio 2015\Projects\Crwal v0.2\Crwal v0.2\obj\Debug\Crwal v0.2.pdb
+C:\Users\Ahmad Vaceem\Documents\Visual Studio 2015\Projects\Crwal v0.2\Crwal v0.2\obj\Debug\Crwal v0.2.csprojResolveAssemblyReference.cache
