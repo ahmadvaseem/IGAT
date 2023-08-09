@@ -1,0 +1,212 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="igat.com.MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+        
+    	<!-- Meta-Tags -->
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta name="keywords" content="" />
+	<!-- //Meta-Tags -->
+
+    	<!-- Custom-Stylesheet-Links -->
+		<link rel="stylesheet" href="Resources//css//style.css" 	type="text/css" media="all"/>
+		<link rel="stylesheet" href="Resources//css//clndr.css" 	type="text/css" media="all"/>
+		<link rel="stylesheet" href="Resources/css/acornmediaplayer.base.css" type="text/css" media="all"/>
+		<link rel="stylesheet" href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" type="text/css" media="all"/>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" type="text/css" media="all"/>
+
+        <script src ="Resources//js//jquery-2.1.4.min.js" type="text/javascript" ></script>
+
+	<!-- //Custom-Stylesheet-Links -->
+        <style type="text/css">
+            #divSuggestions {
+            min-width: 280px;
+            padding: 0px;
+            right: 0px;
+            top: 93px;
+            position: absolute;
+            border: solid 2px #1E88E5;
+            display: none;
+            padding: 10px 0px;
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 1100;
+            
+            }
+
+            .liSuggest {
+                cursor: pointer;
+                padding: 4px 7px 4px 15px;
+                display: block;
+            }
+            #divSuggestions ul li {
+                list-style: none;
+                font-family: Arial;
+                padding: 4px 7px 4px 15px;
+                color: #808080;
+                cursor: default;
+                font-size: 16px;
+                white-space: nowrap;
+                font-weight: normal;
+                text-shadow: 0px 0px 0px;
+                display: block;
+                width:96%;
+                text-align:left;
+            }
+            .hoverClass {
+                background-color: #b9d1f7;
+                border-top: solid 2px deepskyblue;
+                border-bottom: solid 2px deepskyblue;
+            }
+        </style>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var elm = $("#search");
+                var position = elm.offset();
+                var left = position.left;
+                var top = position.top + elm.outerHeight();
+                $("#divSuggestions").css("top", top);
+                $("#divSuggestions").css("left", left);
+                $("#divSuggestions").width(elm.outerWidth());
+                $("#searchfield").keyup(function () {
+                    var elm = $("#searchfield");
+                    searchVal = elm.val();
+                    if (searchVal != "") {
+                        ajaxSuggestions(searchVal);
+                    }
+                });
+            });
+
+
+            function ajaxSuggestions(v) {
+                $.ajax({
+                    type: "POST",
+                    url: "ajax/GetSuggestions.aspx/Suggest",
+                    /*data: '{}',*/
+                    data: JSON.stringify({ query: v}),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: OnSuccess,
+                    failure: function (response) {
+                        alert(response.d);
+                    },
+                    error: function (response) {
+                        alert(response.d);
+                    }
+                });
+            }
+            
+            function OnSuccess(response) {
+                
+                $("#divSuggestions").show();
+                var container = $("#divSuggestions ul");
+                container.empty();
+
+                   var suggestions = response.d;
+                //$("#divSuggestions").eq(0).remove();
+                   
+                   $(suggestions).each(function () {
+                       var id = this.ID;
+                       var elm = $("<li style='cursor:pointer;' id='" + id + "'>" + this.Name + "</li>");
+                       elm.hover(function () {
+                           var e = $("#divSuggestions ul li");
+                           $(e).each(function () {
+                               $(this).css("padding", "4px 7px 4px 15px");
+                               $(this).removeClass("hoverClass");
+                           });
+                           $(this).css("padding", "2px 7px 2px 15px");
+                           $(this).addClass("hoverClass");
+                       });
+                       elm.click(function () {
+                           $("#searchfield").val($(this).text());
+                           $("#divSuggestions ul").empty();
+                           HideSuggestion();
+                           //ShowUrl($(this).attr("id"));
+                           location.href = encodeURI("http://localhost:49211/Details.aspx?ID=" + id);
+
+                       });
+
+                       container.append(elm);
+                   });
+            }
+            $("body").click(function () {
+                HideSuggestion();
+            });
+            function HideSuggestion() {
+                $("#divSuggestions").hide();
+            }
+            
+          
+
+        </script>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+<form id="form1" runat="server">
+
+        <div class="wrap agileits w3layouts">
+
+            <!-- Navbar -->
+            <nav>
+                <ul>
+                    <li>
+                        <div class="agileits w3layouts">
+                            <h1 class="item-bottom w3l"><asp:HyperLink  style="color:deepskyblue; font-family:Rockwell" ID="HyperLink2" runat="server" Text="IGAT"  NavigateUrl="MainPage.aspx" >  </asp:HyperLink></h1>
+                        </div>
+                    </li>
+                   
+                 <li id="search">
+
+                        <input type="text" style="width: 80%;" id="searchfield" placeholder="Search Review" />
+                        <input type="button" class="searchButton" />
+                        <div id="divSuggestions">
+                            <ul style="width: 100%; padding: 0px;overflow:visible;"></ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-container agileits w3layouts">
+                            <div class="item-top aits"><asp:HyperLink  style="color:White" ID="HyperLink6" runat="server" Text="Games"  NavigateUrl="Games.aspx" >  </asp:HyperLink></div>
+                            <div class="item-bottom w3l"><asp:HyperLink  style="color:deepskyblue" ID="HyperLink7" runat="server" Text="Games"  NavigateUrl="Games.aspx" >  </asp:HyperLink></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-container agileits w3layouts">
+                            <div class="item-top aits"><asp:HyperLink  style="color:White" ID="HyperLink5" runat="server" Text="Genre"  NavigateUrl="Genre.aspx" >  </asp:HyperLink></div>
+                            <div class="item-bottom w3l">
+                                <asp:HyperLink  style="color:deepskyblue" ID="HyperLink1" runat="server" Text="Genre"  NavigateUrl="Genre.aspx" >  </asp:HyperLink>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-container agileits w3layouts">
+                            <div class="item-top aits">  <asp:HyperLink  style="color:White" ID="HyperLink3" runat="server" Text="About"  NavigateUrl="About.aspx" >  </asp:HyperLink>
+                            </div>
+                            <div class="item-bottom w3l">  <asp:HyperLink  style="color:deepskyblue" ID="HyperLink4" runat="server" Text="About"  NavigateUrl="About.aspx" >  </asp:HyperLink>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-container agileits w3layouts">
+                            <div class="item-top aits">Contact</div>
+                            <div class="item-bottom w3l">Contact</div>
+                        </div>
+                    </li>
+                </ul>
+
+            </nav>
+            <!-- //Navbar -->
+
+
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>

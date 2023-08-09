@@ -1,0 +1,14 @@
+bettery
+console
+cpu
+display
+gpu
+engine
+memory
+lag
+load
+performance
+platform
+ping
+screen
+setting
